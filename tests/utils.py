@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import inspect
 import traceback
 import contextlib
 from typing import Any, TypeVar, Iterator, cast
@@ -8,7 +9,12 @@ from datetime import date, datetime
 from typing_extensions import Literal, get_args, get_origin, assert_type
 
 from openai._types import NoneType
-from openai._utils import is_dict, is_list, is_list_type, is_union_type
+from openai._utils import (
+    is_dict,
+    is_list,
+    is_list_type,
+    is_union_type,
+)
 from openai._compat import PYDANTIC_V2, field_outer_type, get_model_fields
 from openai._models import BaseModel
 
@@ -63,6 +69,8 @@ def assert_matches_type(
         assert isinstance(value, bool)
     elif origin == float:
         assert isinstance(value, float)
+    elif origin == bytes:
+        assert isinstance(value, bytes)
     elif origin == datetime:
         assert isinstance(value, datetime)
     elif origin == date:
@@ -91,10 +99,12 @@ def assert_matches_type(
                 traceback.print_exc()
                 continue
 
-        assert False, "Did not match any variants"
+        raise AssertionError("Did not match any variants")
     elif issubclass(origin, BaseModel):
         assert isinstance(value, type_)
         assert assert_matches_model(type_, cast(Any, value), path=path)
+    elif inspect.isclass(origin) and origin.__name__ == "HttpxBinaryResponseContent":
+        assert value.__class__.__name__ == "HttpxBinaryResponseContent"
     else:
         assert None, f"Unhandled field type: {type_}"
 

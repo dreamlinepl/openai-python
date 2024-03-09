@@ -38,6 +38,7 @@ from openai.types.chat import (
     ChatCompletionNamedToolChoice,
     ChatCompletionRole,
     ChatCompletionSystemMessageParam,
+    ChatCompletionTokenLogprob,
     ChatCompletionTool,
     ChatCompletionToolChoiceOption,
     ChatCompletionToolMessageParam,
@@ -48,18 +49,6 @@ from openai.types.chat import (
 Methods:
 
 - <code title="post /chat/completions">client.chat.completions.<a href="./src/openai/resources/chat/completions.py">create</a>(\*\*<a href="src/openai/types/chat/completion_create_params.py">params</a>) -> <a href="./src/openai/types/chat/chat_completion.py">ChatCompletion</a></code>
-
-# Edits
-
-Types:
-
-```python
-from openai.types import Edit
-```
-
-Methods:
-
-- <code title="post /edits">client.edits.<a href="./src/openai/resources/edits.py">create</a>(\*\*<a href="src/openai/types/edit_create_params.py">params</a>) -> <a href="./src/openai/types/edit.py">Edit</a></code>
 
 # Embeddings
 
@@ -181,22 +170,6 @@ Methods:
 - <code title="post /fine_tuning/jobs/{fine_tuning_job_id}/cancel">client.fine_tuning.jobs.<a href="./src/openai/resources/fine_tuning/jobs.py">cancel</a>(fine_tuning_job_id) -> <a href="./src/openai/types/fine_tuning/fine_tuning_job.py">FineTuningJob</a></code>
 - <code title="get /fine_tuning/jobs/{fine_tuning_job_id}/events">client.fine_tuning.jobs.<a href="./src/openai/resources/fine_tuning/jobs.py">list_events</a>(fine_tuning_job_id, \*\*<a href="src/openai/types/fine_tuning/job_list_events_params.py">params</a>) -> <a href="./src/openai/types/fine_tuning/fine_tuning_job_event.py">SyncCursorPage[FineTuningJobEvent]</a></code>
 
-# FineTunes
-
-Types:
-
-```python
-from openai.types import FineTune, FineTuneEvent, FineTuneEventsListResponse
-```
-
-Methods:
-
-- <code title="post /fine-tunes">client.fine_tunes.<a href="./src/openai/resources/fine_tunes.py">create</a>(\*\*<a href="src/openai/types/fine_tune_create_params.py">params</a>) -> <a href="./src/openai/types/fine_tune.py">FineTune</a></code>
-- <code title="get /fine-tunes/{fine_tune_id}">client.fine_tunes.<a href="./src/openai/resources/fine_tunes.py">retrieve</a>(fine_tune_id) -> <a href="./src/openai/types/fine_tune.py">FineTune</a></code>
-- <code title="get /fine-tunes">client.fine_tunes.<a href="./src/openai/resources/fine_tunes.py">list</a>() -> <a href="./src/openai/types/fine_tune.py">SyncPage[FineTune]</a></code>
-- <code title="post /fine-tunes/{fine_tune_id}/cancel">client.fine_tunes.<a href="./src/openai/resources/fine_tunes.py">cancel</a>(fine_tune_id) -> <a href="./src/openai/types/fine_tune.py">FineTune</a></code>
-- <code title="get /fine-tunes/{fine_tune_id}/events">client.fine_tunes.<a href="./src/openai/resources/fine_tunes.py">list_events</a>(fine_tune_id, \*\*<a href="src/openai/types/fine_tune_list_events_params.py">params</a>) -> <a href="./src/openai/types/fine_tune_events_list_response.py">FineTuneEventsListResponse</a></code>
-
 # Beta
 
 ## Assistants
@@ -251,7 +224,7 @@ Methods:
 Types:
 
 ```python
-from openai.types.beta.threads import RequiredActionFunctionToolCall, Run
+from openai.types.beta.threads import RequiredActionFunctionToolCall, Run, RunStatus
 ```
 
 Methods:

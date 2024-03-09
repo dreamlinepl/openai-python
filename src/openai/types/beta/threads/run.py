@@ -1,11 +1,11 @@
 # File generated from our OpenAPI spec by Stainless.
 
-import builtins
 from typing import List, Union, Optional
 from typing_extensions import Literal
 
 from ...shared import FunctionDefinition
 from ...._models import BaseModel
+from .run_status import RunStatus
 from .required_action_function_tool_call import RequiredActionFunctionToolCall
 
 __all__ = [
@@ -17,6 +17,7 @@ __all__ = [
     "ToolAssistantToolsCode",
     "ToolAssistantToolsRetrieval",
     "ToolAssistantToolsFunction",
+    "Usage",
 ]
 
 
@@ -61,6 +62,17 @@ class ToolAssistantToolsFunction(BaseModel):
 Tool = Union[ToolAssistantToolsCode, ToolAssistantToolsRetrieval, ToolAssistantToolsFunction]
 
 
+class Usage(BaseModel):
+    completion_tokens: int
+    """Number of completion tokens used over the course of the run."""
+
+    prompt_tokens: int
+    """Number of prompt tokens used over the course of the run."""
+
+    total_tokens: int
+    """Total number of tokens used (prompt + completion)."""
+
+
 class Run(BaseModel):
     id: str
     """The identifier, which can be referenced in API endpoints."""
@@ -72,10 +84,10 @@ class Run(BaseModel):
     execution of this run.
     """
 
-    cancelled_at: Optional[int]
+    cancelled_at: Optional[int] = None
     """The Unix timestamp (in seconds) for when the run was cancelled."""
 
-    completed_at: Optional[int]
+    completed_at: Optional[int] = None
     """The Unix timestamp (in seconds) for when the run was completed."""
 
     created_at: int
@@ -84,7 +96,7 @@ class Run(BaseModel):
     expires_at: int
     """The Unix timestamp (in seconds) for when the run will expire."""
 
-    failed_at: Optional[int]
+    failed_at: Optional[int] = None
     """The Unix timestamp (in seconds) for when the run failed."""
 
     file_ids: List[str]
@@ -101,10 +113,10 @@ class Run(BaseModel):
     this run.
     """
 
-    last_error: Optional[LastError]
+    last_error: Optional[LastError] = None
     """The last error associated with this run. Will be `null` if there are no errors."""
 
-    metadata: Optional[builtins.object]
+    metadata: Optional[object] = None
     """Set of 16 key-value pairs that can be attached to an object.
 
     This can be useful for storing additional information about the object in a
@@ -122,18 +134,16 @@ class Run(BaseModel):
     object: Literal["thread.run"]
     """The object type, which is always `thread.run`."""
 
-    required_action: Optional[RequiredAction]
+    required_action: Optional[RequiredAction] = None
     """Details on the action required to continue the run.
 
     Will be `null` if no action is required.
     """
 
-    started_at: Optional[int]
+    started_at: Optional[int] = None
     """The Unix timestamp (in seconds) for when the run was started."""
 
-    status: Literal[
-        "queued", "in_progress", "requires_action", "cancelling", "cancelled", "failed", "completed", "expired"
-    ]
+    status: RunStatus
     """
     The status of the run, which can be either `queued`, `in_progress`,
     `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`, or
@@ -151,4 +161,11 @@ class Run(BaseModel):
     The list of tools that the
     [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
     this run.
+    """
+
+    usage: Optional[Usage] = None
+    """Usage statistics related to the run.
+
+    This value will be `null` if the run is not in a terminal state (i.e.
+    `in_progress`, `queued`, etc.).
     """
